@@ -15,31 +15,18 @@
  * limitations under the License.
  */
 
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import {
-  Alert,
-  Button,
-  CircularProgress,
-  Container,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  Divider,
-  IconButton,
-  Snackbar,
-  Stack,
-  Typography,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import NavBar from "../components/navbar";
-import ReceiptRow from "../components/receiptRow";
-import ExpenseDialog from "../components/expenseDialog";
-import { useAuth } from "../firebase/auth";
-import { deleteReceipt, getReceipts } from "../firebase/firestore";
-import { deleteImage } from "../firebase/storage";
-import styles from "../styles/dashboard.module.scss";
+ import { useState, useEffect } from 'react';
+ import Head from 'next/head';
+ import { useRouter } from 'next/router';
+ import { Alert, Button, CircularProgress, Container, Dialog, DialogContent, DialogActions, Divider, IconButton, Snackbar, Stack, Typography } from '@mui/material';
+ import AddIcon from '@mui/icons-material/Add';
+ import NavBar from '../components/navbar';
+ import ReceiptRow from '../components/receiptRow';
+ import ExpenseDialog from '../components/expenseDialog';
+ import { useAuth } from '../firebase/auth';
+ import { deleteReceipt, getReceipts } from '../firebase/firestore';
+ import { deleteImage } from '../firebase/storage';
+ import styles from '../styles/dashboard.module.scss';
 
 const ADD_SUCCESS = "Receipt was successfully added!";
 const ADD_ERROR = "Receipt was not successfully added!";
@@ -76,6 +63,7 @@ export default function Dashboard() {
   // State involved in loading, setting, deleting, and updating receipts
   const [isLoadingReceipts, setIsLoadingReceipts] = useState(true);
   const [deleteReceiptId, setDeleteReceiptId] = useState("");
+  const [receipts, setReceipts] = useState([]);
   const [deleteReceiptImageBucket, setDeleteReceiptImageBucket] = useState("");
   const [updateReceipt, setUpdateReceipt] = useState({});
 
@@ -91,7 +79,7 @@ export default function Dashboard() {
     );
     isSuccess ? setSuccessSnackbar(true) : setErrorSnackbar(true);
     setAction(RECEIPTS_ENUM.none);
-  };
+  }
 
   // Listen to changes for loading and authUser, redirect if needed
   useEffect(() => {
@@ -99,6 +87,16 @@ export default function Dashboard() {
       router.push("/");
     }
   }, [authUser, isLoading]);
+
+  // Get receipts once user is logged in 
+  useEffect(async () => {
+    if(authUser) {
+      const unsubcribe = await getReceipts(authUser.uid, setReceipts, setIsLoadingReceipts);
+      return () => unsubcribe();
+      console.log(auth.currentUser.uid);
+      console.log(authUser.uid);
+    }
+  }, [authUser])
 
   // For all of the onClick functions, update the action and fields for updating
 
@@ -123,6 +121,18 @@ export default function Dashboard() {
     setDeleteReceiptId("");
   };
 
+  const onDelete = async () => {
+    let isSucced = true;
+    try {
+      await deleteReceipt(deleteReceiptId);
+      await deleteImage(deleteReceiptImageBucket);
+    } catch(error) {
+      isSucced = false;
+    }
+
+    resetDelete();
+    onResult(RECEIPTS_ENUM.delete, isSucced);
+  }
   return (
     <div>
       <Head>
@@ -168,6 +178,14 @@ export default function Dashboard() {
             <AddIcon />
           </IconButton>
         </Stack>
+        { receipts.map((receipt) => (
+          <div key={receipt.id}>
+            <Divider light />
+            <ReceiptRow receipt={receipt}
+                        onEdit={() => onUpdate(receipt)}
+                        onDelete={() => onClickDelete(receipt.id, receipt.imageBucket)} />
+          </div>)
+        )}
       </Container>
       <ExpenseDialog
         edit={updateReceipt}
@@ -192,7 +210,7 @@ export default function Dashboard() {
             Cancel
           </Button>
           <Button color="secondary" variant="contained" autoFocus>
-            Delete
+              Delete
           </Button>
         </DialogActions>
       </Dialog>

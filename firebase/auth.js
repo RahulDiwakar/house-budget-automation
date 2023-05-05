@@ -38,7 +38,7 @@ export default function useFireBaseAuth() {
             return;
         }
         setAuthUser({
-            uid: user.id,
+            uid: user.uid,
             email: user.email
         });
         setIsLoading(false);
