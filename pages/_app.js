@@ -28,7 +28,6 @@ export default function App({ Component, pageProps }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <AuthUserProvider>
-        <ParticlesBackground />
         <ThemeProvider theme={theme}>
           <Component {...pageProps} />
         </ThemeProvider>

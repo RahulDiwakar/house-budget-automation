@@ -1,16 +1,17 @@
 
 /* Colors */
 $primary: #FAFAFA;
-$secondary: #00ffee;
+$secondary: #000100;
 $darkSecondary: #000601;
 $success: #08c514;
 $error: #FF5252;
 $dropShadow: $darkSecondary;
 $dropShadowOpacity: 20%;
 
+
 /* Fonts */
-$font-type: "Google Sans", "Roboto", sans-serif;
-$font-title: "Google Sans Mono", "Poppins", serif;
+$font-type: "Consolas", "Poppins", sans-serif;
+$font-title: "COnsolas", "Poppins", serif;
 $font-color: $darkSecondary;
 
 :export {

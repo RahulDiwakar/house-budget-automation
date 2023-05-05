@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import bg from "../components/bg.jpg";
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -32,7 +32,6 @@ import { auth } from "../firebase/firebase";
 import styles from "../styles/landing.module.scss";
 import { useAuth } from "../firebase/auth";
 import { Close } from "@mui/icons-material";
-import 
 
 const REDIRECT_PAGE = "/dashboard";
 
@@ -65,8 +64,8 @@ export default function Home() {
       </Head>
 
       <main>
-        <Container className={styles.container}>
-          <Typography variant="h1" align="center">
+        <Container className={styles.container} backgroundImage="url(${bg})">
+          <Typography variant="h1" align="center" color="#ed6c02">
             Welcome to your everyday House Budget Tracker!
           </Typography>
           <br></br>
@@ -78,6 +77,7 @@ export default function Home() {
           <div className={styles.buttons}>
             <Button
               variant="contained"
+              size="large"
               color="secondary"
               onClick={() => setLogin(true)}
             >

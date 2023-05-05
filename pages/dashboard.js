@@ -155,6 +155,7 @@ export default function Dashboard() {
           <Typography
             variant="h4"
             sx={{ lineHeight: 2, paddingRight: "0.5em" }}
+            className="center-text"
           >
             Add an Expense
           </Typography>
