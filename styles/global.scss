@@ -1,4 +1,7 @@
 @import "variables.module";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   font-family: $font-type;
@@ -6,3 +9,4 @@ body {
   color: $font-color;
   margin: 0 auto;
 }
+

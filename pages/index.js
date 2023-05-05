@@ -15,29 +15,37 @@
  * limitations under the License.
  */
 
-import { useEffect, useState } from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import { EmailAuthProvider, GoogleAuthProvider } from 'firebase/auth';
-import { Button, CircularProgress, Container, Dialog, Typography } from '@mui/material';
-import { auth } from '../firebase/firebase';
-import styles from '../styles/landing.module.scss';
-import { useAuth } from '../firebase/auth';
+import { useEffect, useState } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import { EmailAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Dialog,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { auth } from "../firebase/firebase";
+import styles from "../styles/landing.module.scss";
+import { useAuth } from "../firebase/auth";
+import { Close } from "@mui/icons-material";
+import 
 
-const REDIRECT_PAGE = '/dashboard';
+const REDIRECT_PAGE = "/dashboard";
 
 //Configure Firebase
 const uiConfig = {
-  signInFlow: 'popup', // signin flow with popup rather than redirect flow
+  signInFlow: "popup", // signin flow with popup rather than redirect flow
   signInSuccessUrl: REDIRECT_PAGE,
   // can be Google, Facebook, Twitter, emai/password etc..
   signInOptions: [
     EmailAuthProvider.PROVIDER_ID,
-    GoogleAuthProvider.PROVIDER_ID
-  ]
-
-}
+    GoogleAuthProvider.PROVIDER_ID,
+  ],
+};
 
 export default function Home() {
   const [login, setLogin] = useState(false);
@@ -45,30 +53,49 @@ export default function Home() {
   const { authUser, isLoading } = useAuth();
 
   useEffect(() => {
-    if( !isLoading && authUser) {
-      router.push('/dashboard');
+    if (!isLoading && authUser) {
+      router.push("/dashboard");
     }
   }, [authUser, isLoading]);
 
   return (
     <div>
       <Head>
-        <title>Expense Tracker</title>
+        <title>House Budget Tracker</title>
       </Head>
 
       <main>
         <Container className={styles.container}>
-          <Typography variant="h1">Welcome to Expense Tracker!</Typography>
-          <Typography variant="h2">Add, view, edit, and delete expenses</Typography>
+          <Typography variant="h1" align="center">
+            Welcome to your everyday House Budget Tracker!
+          </Typography>
+          <br></br>
+          <Typography variant="h2" fontSize={"0.4em"} align="center">
+            Add, view, edit, and delete expenses for you and your family.
+          </Typography>
+          <br></br>
+
           <div className={styles.buttons}>
-            <Button variant="contained" color="secondary" onClick={() => setLogin(true)}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setLogin(true)}
+            >
               Login / Register
             </Button>
-            <dialog open={ login } onClose={() => setLogin(false)}>
-              <StyledFirebaseAuth uiConfig={ uiConfig } firebaseAuth={auth}></StyledFirebaseAuth>
+            <dialog open={login} onClose={() => setLogin(false)}>
+              <Close
+                onClick={() => setLogin(false)}
+                className="absolute right-4 top-4"
+              />
+              <StyledFirebaseAuth
+                uiConfig={uiConfig}
+                firebaseAuth={auth}
+              ></StyledFirebaseAuth>
             </dialog>
           </div>
         </Container>
       </main>
-    </div>);
+    </div>
+  );
 }

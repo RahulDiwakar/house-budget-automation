@@ -15,9 +15,18 @@
  * limitations under the License.
  */
 
-import { AppBar, Box, Button, Container, Stack, Toolbar, Typography } from '@mui/material';
-import { useAuth } from '../firebase/auth';
-import styles from '../styles/navbar.module.scss';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Stack,
+  Toolbar,
+  Typography,
+  colors,
+} from "@mui/material";
+import { useAuth } from "../firebase/auth";
+import styles from "../styles/navbar.module.scss";
 
 export default function NavBar() {
   const { authUser, signOut } = useAuth();
@@ -28,7 +37,7 @@ export default function NavBar() {
         <Toolbar className={styles.toolbar}>
           <Container className={styles.container}>
             <Typography variant="h3" sx={{ flexGrow: 1, alignSelf: "center" }}>
-              EXPENSE TRACKER
+              House Budget Tracker
             </Typography>
             <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
               <Typography variant="h6" sx={{ flexGrow: 1 }}>

@@ -1,14 +1,21 @@
 @import "variables.module";
 
+.div{
+  width: 100%;
+}
 .container {
   font-size: 84px;
   margin-top: 2em;
+  
 }
 
 .buttons {
   display: flex;
   margin-top: 0.5em;
+  margin-left: 40%;
 }
+
+
 
 .login-button {
   background-color: $primary;
